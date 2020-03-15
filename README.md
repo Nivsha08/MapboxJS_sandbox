@@ -1,7 +1,7 @@
 ## MapboxJS sandbox
 
 ##### Recreation steps:
-1. Vue w/ TypeScript with SFCs. `tsconfig.json`:
+1. Vue w/ TypeScript using SFCs. `tsconfig.json`:
     ```json
     {
        "compilerOptions": {
@@ -55,7 +55,8 @@
     ``` 
     
 4. Initialize the Map container with this JS code:
-    ```js
+    ```typescript
+    const config : any  = require("./config.json");
     const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
     
     mapboxgl.accessToken = config.token;
