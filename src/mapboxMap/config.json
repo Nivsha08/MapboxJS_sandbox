@@ -1,0 +1,10 @@
+{
+	"defaultToken": "pk.eyJ1Ijoibml2c2hhMDgiLCJhIjoiY2p2MWJxcjNzMGF1cjQ0cWoxczJtZDQ5MyJ9.Efsa5D4dHN6zuC8C89DCCw",
+	"containerElementID": "map-container",
+	"baseMap": "mapbox://styles/mapbox/light-v10",
+	"center": {
+		"lat": 32.074815,
+		"lng": 34.779446
+	},
+	"zoomLevel": 13
+}
