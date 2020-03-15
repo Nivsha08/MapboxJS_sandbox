@@ -68,4 +68,29 @@
     });
     ```
 
-5.  
+5. Given a data JSON `mock`, create a GeoJSON FeatureCollection. Add a source to the MapBox map object, 
+then create a new layer and link it to that source:
+    ```typescript
+    this.map.on('load', () => this.addGeoJSONLayer(collection, 'MockPoints'));
+    
+    addGeoJSONLayer(data: GeoJSON, name: string) : void {
+        this.map.addSource(name, {
+            type: 'geojson',
+            data
+        });
+    
+        this.map.addLayer({
+            id: 'mockPoints',
+            source: name,
+            type: 'circle',
+            paint: {
+                'circle-radius': 3,
+                'circle-color': '#007da5'
+            }
+        });
+    }
+    ``` 
+    Where:
+    * the `source` property refers to the source name.
+    * the `type` property refers to the created marker type ('circle', 'symbol', etc). 
+    * the `paint` property refers to MapBox style props. 
