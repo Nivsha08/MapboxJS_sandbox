@@ -5,51 +5,49 @@
             :zoom="config.zoomLevel"
             @load="onMapLoad" >
         <MglNavigationControl position="top-right" />
-        <MglMarker v-for="(v, i) in vans" :key="i" :coordinates="v">
-            <FontAwesomeIcon slot="marker" icon="shuttle-van" :style="{ color: '#007da5' }" />
-            <MglPopup>
-                <div>
-                    <h2>{{ v[0] }}</h2>
-                    <p>this is the popup text!</p>
-                    <p>custom popup template!</p>
-                    <FontAwesomeIcon icon="shuttle-van" :style="{color: 'blue'}" @click="popupIconClicked"/>
-                </div>
-            </MglPopup>
-        </MglMarker>
+        <MglGeojsonLayer v-if="!markers"
+                         sourceId="vans" :layerId="vansLayerConfig.id"
+                         :source="vansSource" :layer="vansLayerConfig" />
+        <VansMarkers v-else />
     </MglMap>
 </template>
 
 <script lang="ts">
     import Vue from "vue";
     import Mapbox from "mapbox-gl";
-    import {MglMap, MglNavigationControl, MglMarker, MglPopup} from "vue-mapbox";
-    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+    import {MglMap, MglNavigationControl, MglGeojsonLayer} from "vue-mapbox";
     import MapDataManager from "../mapboxMap/MapDataManager";
-    import {Feature, FeatureCollection, Point} from "geojson";
+    import {GeoJSON} from "geojson";
+    import VansMarkers from "./VansMarkers.vue";
+
     const config: any = require("../mapboxMap/config.json");
+    const vansLayerConfig: any = require("../mapboxMap/vansLayerConfig.json");
 
     export default Vue.extend({
         components: {
             MglMap,
             MglNavigationControl,
-            MglMarker,
-            MglPopup,
-            FontAwesomeIcon
+            MglGeojsonLayer,
+            VansMarkers
+        },
+        props: {
+            markers: { type: Boolean, required: true }
         },
         data() {
             return {
                 config,
-                vans: null as number[][]
+                vansLayerConfig,
+                vansSource: null as GeoJSON
             }
         },
         methods: {
             onMapLoad(): void {
-                const vansGeoJSON : FeatureCollection = <FeatureCollection>MapDataManager.getVansGeoJSON();
-                this.vans = vansGeoJSON.features.map((f: Feature) => (<Point>f.geometry).coordinates);
+                const vansGeoJSON : GeoJSON = MapDataManager.getVansGeoJSON();
+                this.vansSource = {
+                    type: "geojson",
+                    data: vansGeoJSON
+                };
             },
-            popupIconClicked(): void {
-                alert("popup icon clicked!");
-            }
         },
         created(): void {
             this.mapbox = Mapbox;
@@ -58,5 +56,9 @@
 </script>
 
 <style scoped>
+    .app-wrapper {
+        /*display: flex;*/
+        /*flex-direction: column;*/
+    }
 </style>
 

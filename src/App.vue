@@ -1,6 +1,9 @@
 <template>
     <div id="app">
-        <Map />
+        <button @click="markers = !markers">
+            <strong>{{ markers ? `Change to GeoJSON layer` : `Change to Markers` }}</strong>
+        </button>
+        <Map :markers="markers" />
     </div>
 </template>
 
@@ -12,6 +15,11 @@
         name: 'App',
         components: {
             Map
+        },
+        data() {
+            return {
+                markers: false
+            }
         }
     });
 </script>
