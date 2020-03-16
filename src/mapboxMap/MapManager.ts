@@ -1,4 +1,4 @@
-import {Feature, FeatureCollection, GeoJSON, Geometry, Point} from "geojson";
+import {Feature, Position, GeoJSON, Point, Polygon} from "geojson";
 import GeoJSONUtils from "../GeoJSONUtils";
 import {LatLng} from "../types";
 const config : any  = require("./config.json");
@@ -13,8 +13,6 @@ class MapManager {
     constructor(accessToken?: string) {
         this.token = accessToken || config.defaultToken;
         this.initializeMap();
-        const collection : GeoJSON = this.createLocationsGeoJSON(mock);
-        this.map.on('load', () => this.addGeoJSONLayer(collection, 'MockPoints'));
     }
 
     initializeMap() : void {
@@ -25,28 +23,46 @@ class MapManager {
             center: config.center,
             zoom: config.zoomLevel
         });
+        this.map.on('load', () => this.renderLayers());
     }
 
-    createLocationsGeoJSON(data: LatLng[]) : GeoJSON {
+    private renderLayers() : void {
+        const collection : GeoJSON = this.createPointsGeoJSON(mock.points);
+        const polygon : GeoJSON = this.createPolygonGeoJSON(mock.polygon);
+        this.addGeoJSONLayer(polygon, 'ServicePolygon', 'fill', {
+            'fill-color': '#000',
+            'fill-opacity': 0.15,
+            'fill-outline-color': '#000'
+        });
+        this.addGeoJSONLayer(collection, 'MockPoints', 'circle', {
+            'circle-radius': 3,
+            'circle-color': '#007da5'
+        });
+    }
+
+    createPointsGeoJSON(data: LatLng[]) : GeoJSON {
         const points : Point[] = data.map(GeoJSONUtils.createPoint);
-        const features : Feature[] = points.map((p: Point) => GeoJSONUtils.createFeature(p));
+        const features : Feature | Feature[] = points.map((p: Point) => GeoJSONUtils.createFeature(p));
         return GeoJSONUtils.createFeatureCollection(features);
     }
 
-    addGeoJSONLayer(data: GeoJSON, name: string) : void {
+    createPolygonGeoJSON(coordinates: Position[][]) : GeoJSON {
+        const polygon : Polygon = GeoJSONUtils.createPolygon(coordinates);
+        const features : Feature[] = [GeoJSONUtils.createFeature(polygon)];
+        return GeoJSONUtils.createFeatureCollection(features);
+    }
+
+    addGeoJSONLayer(data: GeoJSON, name: string, layerType: string, paint: any={}, layout: any={}) : void {
         this.map.addSource(name, {
             type: 'geojson',
             data
         });
-
         this.map.addLayer({
-            id: 'mockPoints',
+            id: name,
             source: name,
-            type: 'circle',
-            paint: {
-                'circle-radius': 3,
-                'circle-color': '#007da5'
-            }
+            type: layerType,
+            paint,
+            layout
         })
     }
 

@@ -1,5 +1,5 @@
 import {LatLng} from "./types";
-import {Feature, FeatureCollection, GeoJsonProperties, Geometry, Point} from "geojson";
+import {Feature, FeatureCollection, GeoJsonProperties, Geometry, Point, Polygon, Position} from "geojson";
 
 class GeoJSONUtils {
 
@@ -23,6 +23,13 @@ class GeoJSONUtils {
         return {
             type: "FeatureCollection",
             features: features
+        }
+    }
+
+    static createPolygon(coordinatesArray : Position[][]) : Polygon {
+        return {
+            type: "Polygon",
+            coordinates: coordinatesArray
         }
     }
 
