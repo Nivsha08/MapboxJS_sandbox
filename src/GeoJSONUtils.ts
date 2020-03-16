@@ -1,5 +1,5 @@
 import {LatLng} from "./types";
-import {Feature, FeatureCollection, GeoJsonProperties, Geometry, Point, Polygon, Position} from "geojson";
+import {Feature, FeatureCollection, GeoJSON, GeoJsonProperties, Geometry, Point, Polygon, Position} from "geojson";
 
 class GeoJSONUtils {
 
@@ -31,6 +31,12 @@ class GeoJSONUtils {
             type: "Polygon",
             coordinates: coordinatesArray
         }
+    }
+
+    static createPointsGeoJSON(data: LatLng[]) : GeoJSON {
+        const points : Point[] = data.map(GeoJSONUtils.createPoint);
+        const features : Feature[] = points.map((p: Point) => GeoJSONUtils.createFeature(p));
+        return GeoJSONUtils.createFeatureCollection(features);
     }
 
 }
