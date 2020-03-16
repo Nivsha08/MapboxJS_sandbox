@@ -9,8 +9,9 @@
   "dependencies": {
     "@types/geojson": "^7946.0.7",
     "core-js": "^3.6.4",
-    "mapbox-gl": "^1.8.1",
-    "vue": "^2.6.11"
+    "mapbox-gl": "^0.53.1",
+    "vue": "^2.6.11",
+    "vue-mapbox": "^0.4.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.2.0",

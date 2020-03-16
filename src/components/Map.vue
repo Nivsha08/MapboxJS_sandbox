@@ -1,22 +1,43 @@
 <template>
-    <div class="map-container" id="map-container" />
+    <MglMap :accessToken="config.defaultToken"
+            :mapStyle.sync="config.baseMap"
+            :center.sync="config.center"
+            :zoom="config.zoomLevel"
+            @load="onMapLoad" >
+        <MglNavigationControl position="top-right" />
+        <MglMarker :coordinates="markerCoordinates" />
+    </MglMap>
 </template>
 
 <script lang="ts">
     import Vue from "vue";
-    import MapManager from "../mapboxMap/MapManager";
+    import Mapbox from "mapbox-gl";
+    import {MglMap, MglNavigationControl, MglMarker} from "vue-mapbox";
+    const config: any = require("../mapboxMap/config.json");
 
     export default Vue.extend({
-        mounted() : void {
-            new MapManager();
+        components: {
+            MglMap,
+            MglNavigationControl,
+            MglMarker
+        },
+        data() {
+            return {
+                config,
+                markerCoordinates: [34.789675, 32.086872]
+            }
+        },
+        methods: {
+            onMapLoad(): void {
+
+            }
+        },
+        created(): void {
+            this.mapbox = Mapbox;
         }
     })
 </script>
 
 <style scoped>
-    .map-container {
-        width: 100%;
-        height: 100%;
-    }
 </style>
 
