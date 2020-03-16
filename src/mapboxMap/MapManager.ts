@@ -15,7 +15,7 @@ class MapManager {
         this.initializeMap();
     }
 
-    initializeMap() : void {
+    private initializeMap() : void {
         mapboxgl.accessToken = this.token;
         this.map = new mapboxgl.Map({
             container: config.containerElementID,
@@ -23,11 +23,14 @@ class MapManager {
             center: config.center,
             zoom: config.zoomLevel
         });
-        this.map.on('load', () => this.renderLayers());
+        this.map.on('load', () => {
+            this.renderLayers();
+        });
     }
 
     private renderLayers() : void {
         const collection : GeoJSON = this.createPointsGeoJSON(mock.points);
+        const vans : GeoJSON = this.createPointsGeoJSON(mock.vans);
         const polygon : GeoJSON = this.createPolygonGeoJSON(mock.polygon);
         this.addGeoJSONLayer(polygon, 'ServicePolygon', 'fill', {
             'fill-color': '#000',
@@ -38,21 +41,25 @@ class MapManager {
             'circle-radius': 3,
             'circle-color': '#007da5'
         });
+        this.addGeoJSONLayer(vans, 'VanPoints', 'circle', {
+            'circle-radius': 3,
+            'circle-color': '#ffa600'
+        });
     }
 
-    createPointsGeoJSON(data: LatLng[]) : GeoJSON {
+    private createPointsGeoJSON(data: LatLng[]) : GeoJSON {
         const points : Point[] = data.map(GeoJSONUtils.createPoint);
         const features : Feature | Feature[] = points.map((p: Point) => GeoJSONUtils.createFeature(p));
         return GeoJSONUtils.createFeatureCollection(features);
     }
 
-    createPolygonGeoJSON(coordinates: Position[][]) : GeoJSON {
+    private createPolygonGeoJSON(coordinates: Position[][]) : GeoJSON {
         const polygon : Polygon = GeoJSONUtils.createPolygon(coordinates);
         const features : Feature[] = [GeoJSONUtils.createFeature(polygon)];
         return GeoJSONUtils.createFeatureCollection(features);
     }
 
-    addGeoJSONLayer(data: GeoJSON, name: string, layerType: string, paint: any={}, layout: any={}) : void {
+    private addGeoJSONLayer(data: GeoJSON, name: string, layerType: string, paint: any={}, layout: any={}) : void {
         this.map.addSource(name, {
             type: 'geojson',
             data
