@@ -4,7 +4,7 @@
             <button @click="markers = !markers" :disabled="!markers && numOfPoints > 1500">
                 <strong>{{ markers ? `Change to GeoJSON layer` : `Change to Markers (<= 1500)` }}</strong>
             </button>
-            <input type="range" min="0" max="15000" step="1" v-model="numOfPoints" :style="{width: '300px'}">
+            <input type="range" min="0" :max="markers ? 1500 : 15000" step="1" v-model="numOfPoints" :style="{width: '300px'}">
             <span>{{ numOfPoints }} objects</span>
         </div>
         <Map :markers="markers" :numOfPoints="Number(numOfPoints)" />
