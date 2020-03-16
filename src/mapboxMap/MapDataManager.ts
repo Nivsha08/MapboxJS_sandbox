@@ -5,7 +5,7 @@ const mock : any = require("../mockData/mockLocations.json");
 class MapDataManager {
 
     static getVansGeoJSON(): GeoJSON {
-        const vans : GeoJSON = GeoJSONUtils.createPointsGeoJSON(mock.vans);
+        const vans : GeoJSON = GeoJSONUtils.createPointsGeoJSON(mock.points);
         return vans;
     }
 

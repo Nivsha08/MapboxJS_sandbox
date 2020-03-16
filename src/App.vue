@@ -1,9 +1,13 @@
 <template>
     <div id="app">
-        <button @click="markers = !markers">
-            <strong>{{ markers ? `Change to GeoJSON layer` : `Change to Markers` }}</strong>
-        </button>
-        <Map :markers="markers" />
+        <div class="control-wrapper">
+            <button @click="markers = !markers">
+                <strong>{{ markers ? `Change to GeoJSON layer` : `Change to Markers` }}</strong>
+            </button>
+            <input type="range" min="0" max="15000" step="1" v-model="numOfPoints" :style="{width: '300px'}">
+            <span>{{ numOfPoints }} objects</span>
+        </div>
+        <Map :markers="markers" :numOfPoints="Number(numOfPoints)" />
     </div>
 </template>
 
@@ -18,7 +22,8 @@
         },
         data() {
             return {
-                markers: false
+                markers: false,
+                numOfPoints: 100
             }
         }
     });
@@ -42,5 +47,9 @@
         margin: 0;
         padding: 0;
         height: 100%;
+    }
+    .control-wrapper {
+        display: flex;
+        align-items: center;
     }
 </style>

@@ -29,6 +29,16 @@
             MglPopup,
             FontAwesomeIcon
         },
+        props: {
+            numOfPoints: { required: true }
+        },
+        watch: {
+            numOfPoints(): void {
+                const vansGeoJSON : FeatureCollection = <FeatureCollection>MapDataManager.getVansGeoJSON();
+                this.vansCoordinates = vansGeoJSON.features.map((f: Feature) => (<Point>f.geometry).coordinates)
+                    .slice(0, Number(this.numOfPoints));
+            }
+        },
         data() {
             return {
                 config,
@@ -42,7 +52,8 @@
         },
         mounted(): void {
             const vansGeoJSON : FeatureCollection = <FeatureCollection>MapDataManager.getVansGeoJSON();
-            this.vansCoordinates = vansGeoJSON.features.map((f: Feature) => (<Point>f.geometry).coordinates);
-        },
+            this.vansCoordinates = vansGeoJSON.features.map((f: Feature) => (<Point>f.geometry).coordinates)
+                .slice(0, Number(this.numOfPoints));
+        }
     })
 </script>

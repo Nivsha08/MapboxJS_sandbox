@@ -8,7 +8,7 @@
         <MglGeojsonLayer v-if="!markers"
                          sourceId="vans" :layerId="vansLayerConfig.id"
                          :source="vansSource" :layer="vansLayerConfig" />
-        <VansMarkers v-else />
+        <VansMarkers v-else :numOfPoints="Number(numOfPoints)" />
     </MglMap>
 </template>
 
@@ -17,7 +17,7 @@
     import Mapbox from "mapbox-gl";
     import {MglMap, MglNavigationControl, MglGeojsonLayer} from "vue-mapbox";
     import MapDataManager from "../mapboxMap/MapDataManager";
-    import {GeoJSON} from "geojson";
+    import {FeatureCollection, GeoJSON} from "geojson";
     import VansMarkers from "./VansMarkers.vue";
 
     const config: any = require("../mapboxMap/config.json");
@@ -31,7 +31,18 @@
             VansMarkers
         },
         props: {
-            markers: { type: Boolean, required: true }
+            markers: { type: Boolean, required: true },
+            numOfPoints: { type:Number, required: true }
+        },
+        watch: {
+            numOfPoints(): void {
+                const vansGeoJSON : FeatureCollection = <FeatureCollection>MapDataManager.getVansGeoJSON();
+                vansGeoJSON.features = vansGeoJSON.features.slice(0, this.numOfPoints);
+                this.vansSource = {
+                    type: "geojson",
+                    data: vansGeoJSON
+                };
+            }
         },
         data() {
             return {
@@ -43,6 +54,7 @@
         methods: {
             onMapLoad(): void {
                 const vansGeoJSON : GeoJSON = MapDataManager.getVansGeoJSON();
+                vansGeoJSON.features = vansGeoJSON.features.slice(0, this.numOfPoints);
                 this.vansSource = {
                     type: "geojson",
                     data: vansGeoJSON
