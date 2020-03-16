@@ -16,17 +16,17 @@
 
 <script lang="ts">
     import Vue from "vue";
-    import {MglMarker, MglPopup} from "vue-mapbox";
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
     import MapDataManager from "../mapboxMap/MapDataManager";
     import {Feature, FeatureCollection, Point} from "geojson";
 
+    const MglComponents: any = require("vue-mapbox");
     const config: any = require("../mapboxMap/config.json");
 
     export default Vue.extend({
         components: {
-            MglMarker,
-            MglPopup,
+            MglMarker: MglComponents.MglMarker,
+            MglPopup: MglComponents.MglPopup,
             FontAwesomeIcon
         },
         props: {

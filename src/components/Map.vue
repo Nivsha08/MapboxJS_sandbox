@@ -14,8 +14,8 @@
 
 <script lang="ts">
     import Vue from "vue";
-    import Mapbox from "mapbox-gl";
-    import {MglMap, MglNavigationControl, MglGeojsonLayer} from "vue-mapbox";
+    const Mapbox: any = require("mapbox-gl");
+    const MglComponents: any = require("vue-mapbox");
     import MapDataManager from "../mapboxMap/MapDataManager";
     import {FeatureCollection, GeoJSON} from "geojson";
     import VansMarkers from "./VansMarkers.vue";
@@ -25,9 +25,9 @@
 
     export default Vue.extend({
         components: {
-            MglMap,
-            MglNavigationControl,
-            MglGeojsonLayer,
+            MglMap: MglComponents.MglMap,
+            MglNavigationControl: MglComponents.MglNavigationControl,
+            MglGeojsonLayer: MglComponents.MglGeojsonLayer,
             VansMarkers
         },
         props: {
@@ -48,12 +48,13 @@
             return {
                 config,
                 vansLayerConfig,
-                vansSource: null as GeoJSON
+                mapbox: null as any,
+                vansSource: null as any
             }
         },
         methods: {
             onMapLoad(): void {
-                const vansGeoJSON : GeoJSON = MapDataManager.getVansGeoJSON();
+                const vansGeoJSON : FeatureCollection = <FeatureCollection>MapDataManager.getVansGeoJSON();
                 vansGeoJSON.features = vansGeoJSON.features.slice(0, this.numOfPoints);
                 this.vansSource = {
                     type: "geojson",
