@@ -5,6 +5,7 @@ const config : any  = require("./config.json");
 const mapboxgl : any = require('mapbox-gl/dist/mapbox-gl.js');
 const mock : any = require("../mockData/mockLocations.json");
 
+
 class MapManager {
 
     token : string | null = null;
