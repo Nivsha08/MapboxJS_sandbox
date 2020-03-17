@@ -9,7 +9,7 @@
     import {Feature, GeoJSON, Point} from "geojson";
     import GeoJSONUtils from "../GeoJSONUtils";
     const MglComponents: any = require("vue-mapbox");
-    const vansConfig: any = require("../mapboxMap/vansConfig.json");
+    const vansConfig: any = require("../mockData/config/vansConfig.json");
     const vansLocations: LatLng[] = require("../mockData/vans.json");
 
     export default Vue.extend({

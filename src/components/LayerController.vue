@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="input-row" v-for="(layerName, i) in Object.keys(controller)" :key="i">
             <input type="checkbox" :id="layerName" :checked="controller[layerName]" @change="toggleLayer(layerName)" />
-            <span>{{ layerName | humanize }}</span>
+            <label :for="layerName">{{ layerName | humanize }}</label>
         </div>
 
     </div>

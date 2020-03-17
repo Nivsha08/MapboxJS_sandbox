@@ -11,7 +11,7 @@
     import {Feature, GeoJSON, Point} from "geojson";
     import GeoJSONUtils from "../GeoJSONUtils";
     const MglComponents: any = require("vue-mapbox");
-    const requestMarkersConfig: any = require("../mapboxMap/requestMarkersConfig.json");
+    const requestMarkersConfig: any = require("../mockData/config/requestMarkersConfig.json");
     const requestMarkers: LatLng[] = require("../mockData/requestMarkers.json");
 
     export default Vue.extend({

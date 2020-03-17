@@ -9,7 +9,7 @@
     import GeoJSONUtils from "../GeoJSONUtils";
     const MglComponents: any = require("vue-mapbox");
     const polygonCoordinates: Position[][] = require("../mockData/servicePolygon.json");
-    const polygonConfig: any = require("../mapboxMap/polygonConfig.json");
+    const polygonConfig: any = require("../mockData/config/polygonConfig.json");
     export default Vue.extend({
         components: {
             GeojsonLayer: MglComponents.MglGeojsonLayer

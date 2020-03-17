@@ -3,10 +3,10 @@
             :center.sync="config.center" :zoom="config.zoomLevel">
         <LayerController :controller="controller" :toggleLayer="toggleLayer" />
         <NavigationControl position="top-right" />
-        <FullScreenButton />
         <ServicePolygon v-if="controller.servicePolygon" />
         <FilteredVans v-if="controller.filteredVans" />
         <RequestMarkers v-if="controller.requestMarkers" />
+        <SelectedVan v-if="controller.selectedVan" />
     </MglMap>
 </template>
 
@@ -18,6 +18,7 @@
     import FilteredVans from "./FilteredVans.vue";
     import RequestMarkers from "./RequestMarkers.vue";
     import LayerController from "./LayerController.vue";
+    import SelectedVan from "./SelectedVan.vue";
 
     const config: any = require("../mapboxMap/config.json");
 
@@ -25,11 +26,11 @@
         components: {
             MglMap: MglComponents.MglMap,
             NavigationControl: MglComponents.MglNavigationControl,
-            FullScreenButton: MglComponents.MglFullscreenControl,
             LayerController,
             ServicePolygon,
             FilteredVans,
-            RequestMarkers
+            RequestMarkers,
+            SelectedVan
         },
         data() {
             return {
@@ -38,7 +39,8 @@
                 controller: {
                     servicePolygon: true,
                     requestMarkers: true,
-                    filteredVans: true
+                    filteredVans: true,
+                    selectedVan: true
                 }
             }
         },
