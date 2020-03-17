@@ -1,14 +1,12 @@
 <template>
-    <MglMap :accessToken="config.defaultToken"
-            :mapStyle.sync="config.baseMap"
-            :center.sync="config.center"
-            :zoom="config.zoomLevel"
-            @load="onMapLoad" >
-        <MglNavigationControl position="top-right" />
-        <MglGeojsonLayer v-if="!markers"
-                         sourceId="vans" :layerId="vansLayerConfig.id"
-                         :source="vansSource" :layer="vansLayerConfig" />
-        <VansMarkers v-else :numOfPoints="Number(numOfPoints)" />
+    <MglMap class="map" :accessToken="config.defaultToken" :mapStyle.sync="config.baseMap"
+            :center.sync="config.center" :zoom="config.zoomLevel">
+        <LayerController :controller="controller" :toggleLayer="toggleLayer" />
+        <NavigationControl position="top-right" />
+        <FullScreenButton />
+        <ServicePolygon v-if="controller.servicePolygon" />
+        <FilteredVans v-if="controller.filteredVans" />
+        <RequestMarkers v-if="controller.requestMarkers" />
     </MglMap>
 </template>
 
@@ -16,51 +14,40 @@
     import Vue from "vue";
     const Mapbox: any = require("mapbox-gl");
     const MglComponents: any = require("vue-mapbox");
-    import MapDataManager from "../mapboxMap/MapDataManager";
-    import {FeatureCollection, GeoJSON} from "geojson";
-    import VansMarkers from "./VansMarkers.vue";
+    import ServicePolygon from "./ServicePolygon.vue";
+    import FilteredVans from "./FilteredVans.vue";
+    import RequestMarkers from "./RequestMarkers.vue";
+    import LayerController from "./LayerController.vue";
 
     const config: any = require("../mapboxMap/config.json");
-    const vansLayerConfig: any = require("../mapboxMap/vansLayerConfig.json");
 
     export default Vue.extend({
         components: {
             MglMap: MglComponents.MglMap,
-            MglNavigationControl: MglComponents.MglNavigationControl,
-            MglGeojsonLayer: MglComponents.MglGeojsonLayer,
-            VansMarkers
-        },
-        props: {
-            markers: { type: Boolean, required: true },
-            numOfPoints: { type:Number, required: true }
-        },
-        watch: {
-            numOfPoints(): void {
-                const vansGeoJSON : FeatureCollection = <FeatureCollection>MapDataManager.getVansGeoJSON();
-                vansGeoJSON.features = vansGeoJSON.features.slice(0, this.numOfPoints);
-                this.vansSource = {
-                    type: "geojson",
-                    data: vansGeoJSON
-                };
-            }
+            NavigationControl: MglComponents.MglNavigationControl,
+            FullScreenButton: MglComponents.MglFullscreenControl,
+            LayerController,
+            ServicePolygon,
+            FilteredVans,
+            RequestMarkers
         },
         data() {
             return {
                 config,
-                vansLayerConfig,
                 mapbox: null as any,
-                vansSource: null as any
+                controller: {
+                    servicePolygon: true,
+                    requestMarkers: true,
+                    filteredVans: true
+                }
             }
         },
         methods: {
-            onMapLoad(): void {
-                const vansGeoJSON : FeatureCollection = <FeatureCollection>MapDataManager.getVansGeoJSON();
-                vansGeoJSON.features = vansGeoJSON.features.slice(0, this.numOfPoints);
-                this.vansSource = {
-                    type: "geojson",
-                    data: vansGeoJSON
-                };
-            },
+            toggleLayer(layerName: string): void {
+                if (this.controller.hasOwnProperty(layerName)) {
+                    this.controller[layerName] = !this.controller[layerName];
+                }
+            }
         },
         created(): void {
             this.mapbox = Mapbox;
@@ -69,9 +56,8 @@
 </script>
 
 <style scoped>
-    .app-wrapper {
-        /*display: flex;*/
-        /*flex-direction: column;*/
+    .map {
+        position: relative;
     }
 </style>
 

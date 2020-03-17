@@ -3,8 +3,8 @@
 	"containerElementID": "map-container",
 	"baseMap": "mapbox://styles/mapbox/light-v10",
 	"center": {
-		"lat": 32.074815,
-		"lng": 34.779446
+		"lat": 40.7654214,
+		"lng": -73.9768448
 	},
 	"zoomLevel": 13
 }

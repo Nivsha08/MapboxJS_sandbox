@@ -1,0 +1,10 @@
+{
+	"id": "polygon",
+	"source": "polygon",
+	"type": "fill",
+	"paint": {
+		"fill-color": "#000",
+		"fill-opacity": 0.1,
+		"fill-outline-color": "#aaa"
+	}
+}
