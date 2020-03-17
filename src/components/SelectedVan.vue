@@ -1,5 +1,7 @@
 <template>
     <div>
+        <GeojsonLayer :sourceId="routeConfig.id" :layerId="routeConfig.id" :source="routeSource" :layer="routeConfig" />
+        <GeojsonLayer :sourceId="tasksConfig.id" :layerId="tasksConfig.id" :source="tasksSource" :layer="tasksConfig" />
         <MglMarker :coordinates="[selectedVan.location.lng, selectedVan.location.lat]">
             <FontAwesomeIcon slot="marker" icon="shuttle-van" :style="{ color: '#00a3ce', fontSize: '.8rem' }" />
             <MglPopup>
@@ -10,23 +12,23 @@
                 </div>
             </MglPopup>
         </MglMarker>
-        <GeojsonLayer :sourceId="routeConfig.id" :layerId="routeConfig.id"
-                      :source="routeSource" :layer="routeConfig" />
     </div>
 </template>
 
 <script lang="ts">
     import Vue from "vue";
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-    import {Feature, LineString, Position} from "geojson";
+    import {Feature, GeoJSON, LineString, Point, Position} from "geojson";
     import GeoJSONUtils from "../GeoJSONUtils";
-    import {LatLng} from "../types";
+    import {GeoJSONLayerSource, LatLng, Task} from "../types";
 
     const MglComponents: any = require("vue-mapbox");
-    const selectedVan: any = require("../mockData/config/selectedVan.json");
+    const selectedVan: any = require("../mockData/selectedVan.json");
     const routeConfig: any = require("../mockData/config/vanRouteConfig.json");
+    const tasksConfig: any = require("../mockData/config/tasksConfig.json");
 
     export default Vue.extend({
+        inject: ["map", "actions"],
         components: {
             MglMarker: MglComponents.MglMarker,
             MglPopup: MglComponents.MglPopup,
@@ -37,18 +39,37 @@
             return {
                 selectedVan,
                 routeConfig,
-                routeSource: null as any
+                tasksConfig,
+                routeSource: null as any,
+                tasksSource: null as any
+            }
+        },
+        methods: {
+            constructRouteSource(): GeoJSONLayerSource {
+                const routeCoordinates: Position[] = selectedVan.route.map((p: LatLng) => [p.lng, p.lat]);
+                const lineString: LineString = GeoJSONUtils.createLineString(routeCoordinates);
+                const feature: Feature = GeoJSONUtils.createFeature(lineString);
+                return {
+                    type: "geojson",
+                    data: feature,
+                    lineMetrics: true
+                };
+            },
+            constructTasksSource(): GeoJSONLayerSource {
+                const features: Feature[] = selectedVan.tasks.map((p: Task) => {
+                    const point: Point = GeoJSONUtils.createPoint({lat: p.lat, lng: p.lng});
+                    return GeoJSONUtils.createFeature(point, p);
+                });
+                const collection: GeoJSON = GeoJSONUtils.createFeatureCollection(features);
+                return {
+                    type: "geojson",
+                    data: collection
+                };
             }
         },
         beforeMount(): void {
-            const routeCoordinates: Position[] = selectedVan.route.map((p: LatLng) => [p.lng, p.lat]);
-            const lineString: LineString = GeoJSONUtils.createLineString(routeCoordinates);
-            const feature: Feature = GeoJSONUtils.createFeature(lineString);
-            this.routeSource = {
-                type: "geojson",
-                lineMetrics: true,
-                data: feature
-            }
+            this.routeSource = this.constructRouteSource();
+            this.tasksSource = this.constructTasksSource();
         }
     });
 </script>

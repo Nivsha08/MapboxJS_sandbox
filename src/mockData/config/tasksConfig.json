@@ -1,0 +1,24 @@
+{
+	"id": "tasks",
+	"source": "tasks",
+	"type": "circle",
+	"paint": {
+		"circle-stroke-width": 1.5,
+		"circle-stroke-color": "#fff",
+		"circle-radius": {
+			"base": 1.75,
+			"stops": [[12, 2], [22, 180]]
+		},
+		"circle-color": [
+			"match",
+			["get", "task_type"],
+			"dropoff",
+			"red",
+			"pickup",
+			"blue",
+			"wait",
+			"orange",
+			"#ccc"
+		]
+	}
+}

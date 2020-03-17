@@ -2,10 +2,10 @@
     <MglMap class="map" :accessToken="config.defaultToken" :mapStyle.sync="config.baseMap"
             :center.sync="config.center" :zoom="config.zoomLevel">
         <LayerController :controller="controller" :toggleLayer="toggleLayer" />
-        <NavigationControl position="top-right" />
-        <ServicePolygon v-if="controller.servicePolygon" />
-        <FilteredVans v-if="controller.filteredVans" />
-        <RequestMarkers v-if="controller.requestMarkers" />
+        <!--<NavigationControl position="top-right" />-->
+        <!--<ServicePolygon v-if="controller.servicePolygon" />-->
+        <!--<FilteredVans v-if="controller.filteredVans" />-->
+        <!--<RequestMarkers v-if="controller.requestMarkers" />-->
         <SelectedVan v-if="controller.selectedVan" />
     </MglMap>
 </template>
