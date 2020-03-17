@@ -37,17 +37,17 @@
                 config,
                 mapbox: null as any,
                 controller: {
-                    servicePolygon: true,
-                    requestMarkers: true,
-                    filteredVans: true,
-                    selectedVan: true
-                }
+                    servicePolygon: true as boolean,
+                    requestMarkers: true as boolean,
+                    filteredVans: true as boolean,
+                    selectedVan: true as boolean
+                } as { [key: string]: boolean }
             }
         },
         methods: {
             toggleLayer(layerName: string): void {
                 if (this.controller.hasOwnProperty(layerName)) {
-                    this.controller[layerName] = !this.controller[layerName];
+                    this.controller[layerName] = <boolean> !this.controller[layerName];
                 }
             }
         },

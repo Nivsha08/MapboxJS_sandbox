@@ -25,7 +25,7 @@
             }
         },
         beforeMount(): void {
-            const features: Feature[] = requestMarkers.map((p: {lat, lng, type}) => {
+            const features: Feature[] = requestMarkers.map((p: {lat: number, lng: number, type: string}) => {
                 const geometry: Point = GeoJSONUtils.createPoint({lat: p.lat, lng: p.lng});
                 return GeoJSONUtils.createFeature(geometry, {type: p.type});
             });
