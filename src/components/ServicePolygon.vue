@@ -1,5 +1,5 @@
 <template>
-    <GeojsonLayer :sourceId="polygonConfig.source" :layerId="polygonConfig.id"
+    <GeojsonLayer v-if="visible" :sourceId="polygonConfig.source" :layerId="polygonConfig.id"
                   :source="source" :layer="polygonConfig" />
 </template>
 
@@ -13,6 +13,9 @@
     export default Vue.extend({
         components: {
             GeojsonLayer: MglComponents.MglGeojsonLayer
+        },
+        props: {
+            visible: {type: Boolean, default: true}
         },
         data() {
             return {

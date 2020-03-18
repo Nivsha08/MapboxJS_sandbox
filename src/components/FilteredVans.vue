@@ -1,5 +1,5 @@
 <template>
-    <GeojsonLayer :sourceId="vansConfig.id" :layerId="vansConfig.id"
+    <GeojsonLayer v-if="visible" :sourceId="vansConfig.id" :layerId="vansConfig.id"
                   :source="source" :layer="vansConfig" />
 </template>
 
@@ -15,6 +15,9 @@
     export default Vue.extend({
         components: {
             GeojsonLayer: MglComponents.MglGeojsonLayer
+        },
+        props: {
+            visible: {type: Boolean, default: true}
         },
         data() {
             return {

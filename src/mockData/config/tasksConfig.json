@@ -6,8 +6,8 @@
 		"circle-stroke-width": 1.5,
 		"circle-stroke-color": "#fff",
 		"circle-radius": {
-			"base": 1.75,
-			"stops": [[12, 2], [22, 180]]
+			"base": 3,
+			"stops": [[12, 3], [22, 180]]
 		},
 		"circle-color": [
 			"match",

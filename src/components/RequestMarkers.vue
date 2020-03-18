@@ -1,6 +1,6 @@
 <template>
     <div>
-        <GeojsonLayer :sourceId="requestMarkersConfig.id" :layerId="requestMarkersConfig.id"
+        <GeojsonLayer v-if="visible" :sourceId="requestMarkersConfig.id" :layerId="requestMarkersConfig.id"
                       :source="source" :layer="requestMarkersConfig" />
     </div>
 </template>
@@ -17,6 +17,9 @@
     export default Vue.extend({
         components: {
             GeojsonLayer: MglComponents.MglGeojsonLayer
+        },
+        props: {
+            visible: {type: Boolean, default: true}
         },
         data() {
             return {
