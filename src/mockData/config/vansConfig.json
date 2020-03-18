@@ -1,0 +1,12 @@
+{
+	"id": "vans",
+	"source": "vans",
+	"type": "circle",
+	"paint": {
+		"circle-radius": {
+			"base": 1.75,
+			"stops": [[12, 2], [22, 180]]
+		},
+		"circle-color": "#666"
+	}
+}

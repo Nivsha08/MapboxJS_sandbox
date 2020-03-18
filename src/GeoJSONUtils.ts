@@ -1,5 +1,15 @@
 import {LatLng} from "./types";
-import {Feature, FeatureCollection, GeoJSON, GeoJsonProperties, Geometry, Point, Polygon, Position} from "geojson";
+import {
+    Feature,
+    FeatureCollection,
+    GeoJSON,
+    GeoJsonProperties,
+    Geometry,
+    LineString,
+    Point,
+    Polygon,
+    Position
+} from "geojson";
 
 class GeoJSONUtils {
 
@@ -8,6 +18,13 @@ class GeoJSONUtils {
             type: "Point",
             coordinates: [point.lng, point.lat]
         };
+    }
+
+    static createLineString(coordinates: Position[]) : LineString {
+        return {
+            type: "LineString",
+            coordinates: coordinates
+        }
     }
 
     static createFeature(geometry: Geometry, properties: GeoJsonProperties={}, id?: string | number) : Feature {

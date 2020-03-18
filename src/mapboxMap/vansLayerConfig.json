@@ -1,9 +1,0 @@
-{
-	"id": "vans",
-	"source": "vans",
-	"type": "circle",
-	"paint": {
-		"circle-radius": 3,
-		"circle-color": "#000"
-	}
-}
