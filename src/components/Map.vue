@@ -7,7 +7,7 @@
         <FilteredVans :visible="controller.filteredVans" />
         <RequestMarkers :visible="controller.requestMarkers" />
         <SelectedVan :visible="controller.selectedVan" />
-        <VanTasks :visible="controller.vanTasks" />
+        <!--<VanTasks :visible="controller.vanTasks" />-->
     </MglMap>
 </template>
 

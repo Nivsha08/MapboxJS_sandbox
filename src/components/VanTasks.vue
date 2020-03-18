@@ -16,7 +16,9 @@
     export default Vue.extend({
         inject: ["map", "actions"],
         components: {
-            GeojsonLayer: MglComponents.MglGeojsonLayer
+            GeojsonLayer: MglComponents.MglGeojsonLayer,
+            MglMarker: MglComponents.MglMarker,
+            MglPopup: MglComponents.MglPopup
         },
         props: {
             visible: {type: Boolean, default: true}

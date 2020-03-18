@@ -1,6 +1,17 @@
 <template>
     <div>
         <GeojsonLayer v-if="visible" :sourceId="routeConfig.id" :layerId="routeConfig.id" :source="routeSource" :layer="routeConfig" />
+        <div v-if="visible">
+            <MglMarker v-for="(task, i) in selectedVan.tasks" :key="i"
+                       :coordinates="[task.lng, task.lat]" anchor="bottom">
+
+                <MglPopup>
+                    <div>
+                        <h3>{{ task.task_type }}</h3>
+                    </div>
+                </MglPopup>
+            </MglMarker>
+        </div>
         <MglMarker :coordinates="[selectedVan.location.lng, selectedVan.location.lat]">
             <FontAwesomeIcon slot="marker" icon="shuttle-van" :style="{ color: '#00a3ce', fontSize: '.8rem' }" />
             <MglPopup>
